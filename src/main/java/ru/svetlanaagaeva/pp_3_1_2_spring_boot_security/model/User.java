@@ -37,13 +37,43 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<Role> roles = new HashSet<>();
+    private Set<Role> roles ;
+
+    //непонятно надо или нет
+//    public String getRolesString() {
+//        return roles.stream()
+//                .map(Role::getName)
+//                .collect(Collectors.joining(" "));
+//    }
+//    private String rolesString;
+
+    // Геттер и сеттер для rolesString
+//    public String getRolesString() {
+//        return rolesString;
+//    }
+
+//    public void setRolesString(String rolesString) {
+//        this.rolesString = rolesString;
+//    }
+
+    // Геттер и сеттер для roles
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getAuthority())).collect(Collectors.toList());
     }
 
+    public String getRole() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return String.join(" ", AuthorityUtils.authorityListToSet(getRoles()));
+    }
     public User() {
     }
 
@@ -97,13 +127,17 @@ public class User implements UserDetails {
         this.username = username;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
-    }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
+//    public String getRolesAsString() {
+//        return roles.stream()
+//                .map(Role::getName)
+//                .collect(Collectors.joining(" "));
+//    }
+//    public String getRole() {
+//        return roles.stream()
+//                .map(Role::getName)
+//                .collect(Collectors.joining(" "));
+//    }
 
     @Override
     public boolean isAccountNonExpired() {

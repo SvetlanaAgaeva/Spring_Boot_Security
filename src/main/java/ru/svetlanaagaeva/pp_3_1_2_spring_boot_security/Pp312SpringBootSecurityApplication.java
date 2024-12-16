@@ -10,7 +10,7 @@ public class Pp312SpringBootSecurityApplication {
     public static void main(String[] args) {
 
         SpringApplication.run(Pp312SpringBootSecurityApplication.class, args);
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+       // BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
                     // Этот код мне нужен для проверки шифрования
 
@@ -22,11 +22,11 @@ public class Pp312SpringBootSecurityApplication {
 //        String rawPassword = "admin";
 //        String encodedPassword = encoder.encode(rawPassword);
 //        System.out.println(encodedPassword);
-
-
-//        String storedPassword = "$2a$10$WGpO3nWurymcdSevIy4K4.YQJhdMufOmp5LoffzpGR9g//owZc1Tu";  // Подставьте зашифрованный пароль из базы данных
-
-                    // Проверка пароля
+//
+////
+//        String storedPassword = "2a$10$O8fNun70rxth9rGa8ZexfOpc6r2O3IB9OKj48ecsmdLbcc6aU7O0G";  // Подставьте зашифрованный пароль из базы данных
+//
+//     //                Проверка пароля
 //        boolean passwordMatches = encoder.matches(rawPassword, storedPassword);
 //        System.out.println("Пароль совпадает: " + passwordMatches);
     }

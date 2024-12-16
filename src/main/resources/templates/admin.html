@@ -54,6 +54,7 @@
         <th>Username</th>
         <th>Name</th>
         <th>Surname</th>
+        <th>Roles</th>
         <th>Actions</th>
     </tr>
     </thead>
@@ -63,6 +64,11 @@
         <td><a th:href="@{/user/{id}(id=${user.id})}" th:text="${user.username}">Username</a></td>
         <td th:text="${user.name}">Name</td>
         <td th:text="${user.surname}">Surname</td>
+        <td>
+            <ul>
+                <li th:each="role : ${user.roles}" th:text="${role.name}"></li>
+            </ul>
+        </td>
         <td>
             <a th:href="@{/admin/edit/{id}(id=${user.id})}" class="btn">Edit</a>
             <a th:href="@{/admin/delete/{id}(id=${user.id})}" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</a>

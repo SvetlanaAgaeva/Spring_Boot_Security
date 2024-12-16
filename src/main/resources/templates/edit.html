@@ -13,26 +13,34 @@
     <input type="hidden" th:field="*{id}"/>
 
     <label for="username">Username:</label>
-    <input type="text" id="username" name="username" required="required" th:value="*{username}" /><br />
-    <br />
-    <br />
+    <input type="text" id="username" name="username" required="required" th:value="*{username}"/><br/>
+    <br/>
+    <br/>
 
     <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required="required" th:value="*{password}" /><br />
-    <br />
-    <br />
+    <input type="password" id="password" name="password" required="required" th:value="*{password}"/><br/>
+    <br/>
+    <br/>
 
     <label for="name">Name:</label>
-    <input type="text" id="name" name="name" required="required" th:value="*{name}" /><br />
-    <br />
-    <br />
+    <input type="text" id="name" name="name" required="required" th:value="*{name}"/><br/>
+    <br/>
+    <br/>
 
     <label for="surname">Surname:</label>
-    <input type="text" id="surname" name="surname" required="required" th:value="*{surname}" /><br />
-    <br />
-    <br />
+    <input type="text" id="surname" name="surname" required="required" th:value="*{surname}"/><br/>
+    <br/>
+    <br/>
 
-
+    <label for="roles">Роль:</label>
+    <select id="roles" name="roles" multiple><br/>
+    <option th:each="role : ${allRoles}"
+            th:value="${role.id}"
+            th:text="${role.name}"
+            th:selected="${user.roles.contains(role)}">
+    </option>
+    </select>
+    <br/>
     <button type="submit">Save</button>
 </form>
 
