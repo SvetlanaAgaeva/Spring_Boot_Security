@@ -19,10 +19,8 @@ import ru.svetlanaagaeva.pp_3_1_2_spring_boot_security.model.User;
 import ru.svetlanaagaeva.pp_3_1_2_spring_boot_security.repository.RoleRepository;
 import ru.svetlanaagaeva.pp_3_1_2_spring_boot_security.repository.UserRepository;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 //@Transactional
 //@Service
@@ -198,25 +196,44 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    @Override
-    public void saveUser(User user) {
-        // Хешируем пароль перед сохранением
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+           //этот метод работает не совсем корректно
+//    @Override
+//    public void saveUser(User user) {
+//        // Хешируем пароль перед сохранением
+//        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+//
+//        // Проверяем, есть ли у пользователя роли
+//        if (user.getRoles() == null || user.getRoles().isEmpty()) {
+//            Optional<Role> userRoleOptional = roleRepository.findByName("ROLE_USER");
+//            if (userRoleOptional.isPresent()) {
+//                user.setRoles(Collections.singleton(userRoleOptional.get()));
+//            } else {
+//                throw new RuntimeException("Role USER not found");
+//            }
+//        }
+//
+//        // Сохраняем пользователя
+//        userRepository.save(user);
+//    }
+    ///гпт предложил вот этот
+                @Override
+                public void saveUser(User user) {
+                    // Хешируем пароль перед сохранением
+                    user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
-        // Проверяем, есть ли у пользователя роли
-        if (user.getRoles() == null || user.getRoles().isEmpty()) {
-            Optional<Role> userRoleOptional = roleRepository.findByName("ROLE_USER");
-            if (userRoleOptional.isPresent()) {
-                user.setRoles(Collections.singleton(userRoleOptional.get()));
-            } else {
-                throw new RuntimeException("Role USER not found");
-            }
-        }
+                    // Получаем существующие роли из базы по их именам
+                    Set<Role> managedRoles = user.getRoles().stream()
+                            .map(role -> roleRepository.findByName(role.getName())
+                                    .orElseThrow(() -> new RuntimeException("Role not found: " + role.getName())))
+                            .collect(Collectors.toSet());
 
-        // Сохраняем пользователя
-        userRepository.save(user);
-    }
-             // метод который меняет пароль
+                    user.setRoles(managedRoles); // Устанавливаем "управляемые" роли
+
+                    // Сохраняем пользователя
+                    userRepository.save(user);
+                }
+
+    // метод который меняет пароль
 //    @Override
 //    public void updateUser(User user) {
 //        // Ищем существующего пользователя
