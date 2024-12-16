@@ -10,7 +10,7 @@ public class Pp312SpringBootSecurityApplication {
     public static void main(String[] args) {
 
         SpringApplication.run(Pp312SpringBootSecurityApplication.class, args);
-       // BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+//        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
                     // Этот код мне нужен для проверки шифрования
 

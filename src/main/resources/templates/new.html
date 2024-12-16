@@ -8,6 +8,15 @@
 
 <h1>Add New User</h1>
 
+<style>
+  /* Добавляем немного стилей, чтобы select выглядел нормально */
+  select {
+    width: 200px;
+    height: 50px;
+  }
+</style>
+
+
 <form action="/admin/create" method="post" th:object="${newUser}">
   <label for="username">Username:</label>
   <input type="text" id="username" name="username" required="required" th:value="*{username}" /><br />
@@ -28,7 +37,14 @@
   <input type="text" id="surname" name="surname" required="required" th:value="*{surname}" /><br />
   <br />
   <br />
-
+  <label for="roles">Roles:</label>
+  <select id="roles" name="roles" multiple="multiple">
+    <option th:each="role : ${allRoles}"
+            th:value="${role.id}"
+            th:text="${role.name}"
+            th:selected="*{roles.contains(role)}">
+    </option>
+  </select><br/>
 
   <button type="submit">Add User</button>
 </form>

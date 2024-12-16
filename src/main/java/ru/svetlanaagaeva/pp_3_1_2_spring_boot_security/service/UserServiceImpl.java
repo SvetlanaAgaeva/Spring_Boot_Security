@@ -162,15 +162,40 @@ public class UserServiceImpl implements UserService {
         return users;
     }
 
-    @Override
-    public List<Role> getAllRoles() {
-        return roleRepository.findAll();
-    }
 
+    //  метод кторый работал !
+//    @Override
+//    public List<Role> getAllRoles() {
+//        return roleRepository.findAll();
+//    }
+
+
+         // предложил гпт !!
+         @Override
+         public List<Role> getAllRoles() {
+             List<Role> roles = roleRepository.findAll();
+             roles.forEach(role -> System.out.println("Role name: " + role.getName()));
+             return roles;
+         }
+
+          /// мой метод, который работал !
+//    @Override
+//    public User getUserById(Long id) {
+//        return userRepository.findById(id)
+//                .orElseThrow(() -> new IllegalArgumentException("User with such ID doesn't exist."));
+//
+//    }
+
+    // гпт сказал
     @Override
     public User getUserById(Long id) {
-        return userRepository.findById(id)
+        User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User with such ID doesn't exist."));
+
+        // Инициализация ролей
+        Hibernate.initialize(user.getRoles());
+
+        return user;
     }
 
     @Override
@@ -191,29 +216,55 @@ public class UserServiceImpl implements UserService {
         // Сохраняем пользователя
         userRepository.save(user);
     }
+             // метод который меняет пароль
+//    @Override
+//    public void updateUser(User user) {
+//        // Ищем существующего пользователя
+//        User existingUser = getUserById(user.getId());
+//
+//        // Обновляем поля
+//        existingUser.setName(user.getName());
+//        existingUser.setSurname(user.getSurname());
+//        existingUser.setUsername(user.getUsername());
+//
+//        // Проверяем, если пароль изменился
+//        if (!bCryptPasswordEncoder.matches(user.getPassword(), existingUser.getPassword())) {
+//            // Если пароль изменился, то хешируем новый пароль
+//            existingUser.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+//        }
+//
+//        // Обновляем роли пользователя
+//        existingUser.setRoles(user.getRoles());
+//
+//        // Сохраняем обновленного пользователя
+//        userRepository.save(existingUser);
+//    }
 
-    @Override
-    public void updateUser(User user) {
-        // Ищем существующего пользователя
-        User existingUser = getUserById(user.getId());
+           // метод который по мдее не должен менять пароль
+           @Override
+           public void updateUser(User user) {
 
-        // Обновляем поля
-        existingUser.setName(user.getName());
-        existingUser.setSurname(user.getSurname());
-        existingUser.setUsername(user.getUsername());
+               User existingUser = getUserById(user.getId());
+               existingUser.setName(user.getName());
+               existingUser.setSurname(user.getSurname());
+               existingUser.setUsername(user.getUsername());
+                    // гпт сказал добавить
+              //existingUser.setRoles(user.getRoles());
+                    // гпт сказал добавить
+               if (user.getRoles() == null || user.getRoles().isEmpty()) {
+                   user.setRoles(existingUser.getRoles());  // Сохраняем роли, если они не переданы
+               }
+                 // дальше мой код
+               if (!existingUser.getPassword().isEmpty()) {
+                   // Проверяем, изменился ли пароль
+                   if (!bCryptPasswordEncoder.matches(existingUser.getPassword(), user.getPassword())) {
+                       user.setPassword(bCryptPasswordEncoder.encode(existingUser.getPassword()));
+                   }    //updatedUser.setPassword((bCryptPasswordEncoder.encode(user.getPassword())));
+                   existingUser.setRoles(user.getRoles());
+                   userRepository.save(existingUser);
 
-        // Проверяем, если пароль изменился
-        if (!bCryptPasswordEncoder.matches(user.getPassword(), existingUser.getPassword())) {
-            // Если пароль изменился, то хешируем новый пароль
-            existingUser.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        }
-
-        // Обновляем роли пользователя
-        existingUser.setRoles(user.getRoles());
-
-        // Сохраняем обновленного пользователя
-        userRepository.save(existingUser);
-    }
+               }
+           }
 
     @Override
     public void deleteUserById(Long id) {

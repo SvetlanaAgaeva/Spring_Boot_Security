@@ -40,22 +40,49 @@ public class AdminController {
         model.addAttribute("newUser", new User());
         return "admin";
     }
+    // это были мои наполовину работающие методы
+//    @GetMapping("/new")
+//    public String showAddUserForm(Model model) {
+//        model.addAttribute("newUser", new User());
+//        return "new";
+//    }
+//    @PostMapping("/create")
+//    public String create(@ModelAttribute User user) {
+//        userService.saveUser(user);
+//        return "redirect:/admin";
+//    }
 
+    // гпт сказал
     @GetMapping("/new")
     public String showAddUserForm(Model model) {
-        model.addAttribute("newUser", new User());
-        return "new";
+        // Создаем новый объект пользователя
+        User newUser = new User();
+
+        // Получаем список всех ролей
+        List<Role> allRoles = userService.getAllRoles();
+
+        // Передаем новый объект пользователя и список ролей в модель
+        model.addAttribute("newUser", newUser);
+        model.addAttribute("allRoles", allRoles);
+
+        return "new";  // Возвращаем страницу для создания нового пользователя
     }
+    // Обработка создания нового пользователя
     @PostMapping("/create")
     public String create(@ModelAttribute User user) {
-        userService.saveUser(user);
-        return "redirect:/admin";
+        userService.saveUser(user);  // Сохраняем нового пользователя
+        return "redirect:/admin";  // Перенаправляем обратно на список пользователей
     }
-
+ ///////// дальше код работает
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable("id") Long id, Model model) {
         try {
             User user = userService.getUserById(id);
+            // gpt пишет
+            List<Role> allRoles = userService.getAllRoles();
+            model.addAttribute("allRoles", allRoles);
+
+            // дальше как было,когда работало
             model.addAttribute("user", user);
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
@@ -64,11 +91,23 @@ public class AdminController {
         return "edit";
     }
 
-    @PostMapping("/edit/{id}")
-    public String editUser(@PathVariable("id") Long id, @ModelAttribute("user") User user) {
-        userService.updateUser(user);
-        return "redirect:/admin";
-    }
+         ///работало плохо
+//    @PostMapping("/edit/{id}")
+//    public String editUser(@PathVariable("id") Long id, @ModelAttribute("user") User user) {
+//        userService.updateUser(user);
+//        return "redirect:/admin";
+//    }
+
+        // гпт сказал
+        @PostMapping("/edit/{id}")
+        public String editUser(@PathVariable("id") Long id, @ModelAttribute("user") User user) {
+            User existingUser = userService.getUserById(id);  // Получаем текущего пользователя из базы
+            if (user.getRoles() == null || user.getRoles().isEmpty()) {
+                user.setRoles(existingUser.getRoles());  // Если роли не переданы, сохраняем текущие роли
+            }
+            userService.updateUser(user);
+            return "redirect:/admin";
+        }
 
     @RequestMapping(value = "/delete/{id}")
     public String deleteUser(@PathVariable Long id) {
@@ -118,7 +157,6 @@ public class AdminController {
 //        userService.updateUser(user); // Сохраняем пользователя
 //        return "redirect:/admin";
 //    }
-
 
 
 }
