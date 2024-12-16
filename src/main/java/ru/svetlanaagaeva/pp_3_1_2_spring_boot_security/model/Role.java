@@ -2,7 +2,6 @@ package ru.svetlanaagaeva.pp_3_1_2_spring_boot_security.model;
 
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
-
 import java.util.HashSet;
 import java.util.Set;
 

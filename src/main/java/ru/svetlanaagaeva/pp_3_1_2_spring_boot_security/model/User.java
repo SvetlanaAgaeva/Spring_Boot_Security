@@ -37,30 +37,9 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    ////  мой код который работад
-    //private Set<Role> roles ;
 
-        //гпт сказал
     private Set<Role> roles = new HashSet<>();
 
-    //непонятно надо или нет
-//    public String getRolesString() {
-//        return roles.stream()
-//                .map(Role::getName)
-//                .collect(Collectors.joining(" "));
-//    }
-//    private String rolesString;
-
-    // Геттер и сеттер для rolesString
-//    public String getRolesString() {
-//        return rolesString;
-//    }
-
-//    public void setRolesString(String rolesString) {
-//        this.rolesString = rolesString;
-//    }
-
-    // Геттер и сеттер для roles
     public Set<Role> getRoles() {
         return roles;
     }
@@ -78,6 +57,7 @@ public class User implements UserDetails {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return String.join(" ", AuthorityUtils.authorityListToSet(getRoles()));
     }
+
     public User() {
     }
 
@@ -132,17 +112,6 @@ public class User implements UserDetails {
     }
 
 
-//    public String getRolesAsString() {
-//        return roles.stream()
-//                .map(Role::getName)
-//                .collect(Collectors.joining(" "));
-//    }
-//    public String getRole() {
-//        return roles.stream()
-//                .map(Role::getName)
-//                .collect(Collectors.joining(" "));
-//    }
-
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -164,46 +133,4 @@ public class User implements UserDetails {
     }
 
 
-//public String getRole() {
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        return String.join(" ", AuthorityUtils.authorityListToSet(getRoles()));
-//    }
-//
-//    public void setRoles(Collection<Role> roles) {
-//        this.roles = roles;
-//    }
-//    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return roles;
-//    }
-
-//    @Override
-//    public String getPassword() {
-//        return password;
-//    }
-//
-//    @Override
-//    public String getUsername() {
-//        return userName;
-//    }
-//
-//    @Override
-//    public boolean isAccountNonExpired() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isAccountNonLocked() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isCredentialsNonExpired() {
-//        return true;
-//    }
-
-//    @Override
-//    public boolean isEnabled() {
-//        return true;
-//    }
 }

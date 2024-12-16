@@ -10,11 +10,9 @@
 <br/>
 
 
-
 <h1>Edit</h1>
 
 <style>
-    /* Добавляем немного стилей, чтобы select выглядел нормально */
     select {
         width: 200px;
         height: 50px;
@@ -54,28 +52,6 @@
         </option>
     </select><br/>
 
-
-<!--    <label class="font-weight-bold">Role</label>-->
-<!--    <div>-->
-<!--        <select  class="form-control" name="roles" multiple>-->
-<!--            <option th:each="role: ${allRoles}"-->
-<!--                    th:value="${role.id}"-->
-<!--                    th:text="${role.name}" name="roles">-->
-<!--            </option>-->
-<!--        </select>-->
-<!--    </div>-->
-
-
-<!--    <label for="roles">Роль:</label>-->
-<!--    <select id="roles" name="roles" multiple>-->
-<!--    <option th:each="role : ${allRoles}"-->
-<!--            th:value="${role.id}"-->
-<!--            th:text="${role.name}"-->
-<!--            th:selected="${user.roles.contains(role)}">-->
-<!--    </option>-->
-<!--    </select><br/><br/>-->
-<!--    <label for="roles">Role (e.g. ROLE_USER, ROLE_ADMIN):</label>-->
-<!--    <input type="text" id="role" name="roles" required="required" th:value="*{roles}"/>-->
     <br/>
     <button type="submit">Save</button>
 </form>
